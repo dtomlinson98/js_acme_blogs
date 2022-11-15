@@ -26,7 +26,19 @@ const createElemWithText = (elementName = 'p', textContent = '', className = '')
 // g. Assigns the user.id to the option.value
 // h. Assigns the user.name to the option.textContent
 // i. Return an array of options elements
-
+const createSelectOptions = (jData) => {
+    if (jData == null) {
+        return undefined;
+    }
+    let optionArray = [];
+    jData.forEach((user) => {
+        let element = document.createElement('option');
+        element.value = user.id;
+        element.textContent = user.name;
+        optionArray.push(element);
+    });
+    return optionArray;
+};
 // 3. toggleCommentSection
 // a. Receives a postId as the parameter
 // b. Selects the section element with the data-post-id attribute equal to the postId
