@@ -53,12 +53,12 @@ const toggleCommentSection = (postId) => {
     if (!postId) {
         return undefined;
     }
-    const postSection = document.querySelector(`secton[data-post-id=${postId}]`);
+    const commmentSection = document.querySelector(`secton[data-post-id=${postId}]`);
     if (!postSection) {
         return null;
     }
-    postSection.classList.toggle('hide');
-    return postSection
+    commentSection.classList.toggle('hide');
+    return commentSection
 }
 // 4. toggleCommentButton
 // a. Receives a postId as the parameter
