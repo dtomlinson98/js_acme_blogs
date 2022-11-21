@@ -91,6 +91,14 @@ const toggleCommentButton = (postId) => {
 // d. Use parentElement.removeChild to remove the child in the loop
 // e. Reassign child to parentElement.lastElementChild in the loop
 // f. Return the parentElement
+const deleteChildElements = (parentElement) => {
+    const child = parentElement.lastElementChild;
+    while (child != undefined) {
+        parentElement.removeChild(child);
+        child = parentElement.lastElementChild
+    }
+    return parentElement;
+}
 
 // NOTE: The above functions had no dependency on other functions. They were very
 // self-contained which is ideal. That is not always possible though. We will try to limit
