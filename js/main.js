@@ -53,7 +53,7 @@ const toggleCommentSection = (postId) => {
     if (!postId) {
         return undefined;
     }
-    const commmentSection = document.querySelector(`section[data-post-id='${postId}']`);
+    const commentSection = document.querySelector(`section[data-post-id='${postId}']`);
     if (!commentSection) {
         return null;
     }
