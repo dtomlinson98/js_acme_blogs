@@ -49,7 +49,17 @@ const createSelectOptions = (jData) => {
 // desired.
 // e. Toggles the class 'hide' on the section element
 // f. Return the section element
-
+const toggleCommentSection = (postId) => {
+    if (!postId) {
+        return undefined;
+    }
+    const postSection = document.querySelector(`secton[data-post-id=${postId}]`);
+    if (!postSection) {
+        return null;
+    }
+    postSection.classList.toggle('hide');
+    return postSection
+}
 // 4. toggleCommentButton
 // a. Receives a postId as the parameter
 // b. Selects the button with the data-post-id attribute equal to the postId received as a
