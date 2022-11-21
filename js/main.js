@@ -70,6 +70,19 @@ const toggleCommentSection = (postId) => {
 // Comments'
 // e. Suggestion (not required) for above: try a ternary statement
 // f. Return the button element
+const toggleCommentButton = (postId) => {
+    if (!postId) {
+        return undefined;
+    }
+    const button = document.querySelector(`button[data-post-id='${postId}']`);
+    if (button == undefined) {
+        return null;
+    }
+    button.textContent == 'Show Comments'
+    ? button.textContent = 'Hide Comments'
+    : button.textContent = 'Show Comments';
+    return button;
+}
 
 // 5. deleteChildElements
 // a. Receives a parentElement as a parameter
