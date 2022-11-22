@@ -96,7 +96,7 @@ const deleteChildElements = (parentElement) => {
         return undefined;
     }
     let child = parentElement.lastElementChild;
-    while (child) {
+    while (child != null) {
         parentElement.removeChild(child);
         child = parentElement.lastElementChild;
     }
