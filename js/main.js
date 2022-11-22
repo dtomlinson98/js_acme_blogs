@@ -92,10 +92,13 @@ const toggleCommentButton = (postId) => {
 // e. Reassign child to parentElement.lastElementChild in the loop
 // f. Return the parentElement
 const deleteChildElements = (parentElement) => {
+    if (!(parentElement instanceof HTMLElement)) {
+        return undefined;
+    }
     const child = parentElement.lastElementChild;
     while (child != undefined) {
         parentElement.removeChild(child);
-        child = parentElement.lastElementChild
+        child = parentElement.lastElementChild;
     }
     return parentElement;
 }
