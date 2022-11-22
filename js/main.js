@@ -122,16 +122,15 @@ const deleteChildElements = (parentElement) => {
 // waiting on the logic inside the toggleComments function until we get there.
 const addButtonListeners = () => {
     const buttons = document.querySelectorAll('main button');
-    if (buttons) {
-        buttons.forEach(button => {
-            const postId = buttons.dataset.postId;
-            buttons.addEventListener('click', (event) => {
+    for (let i = 0; i < buttons.length; i++) {
+            const postId = buttons[i].dataset.postId;
+            buttons[i].addEventListener('click', (event) => {
                 toggleComments(event, postId);
             }, true)
-        })
+        }
         return buttons;
     }
-}
+
 // 7. removeButtonListeners
 // a. Selects all buttons nested inside the main element
 // b. Loops through the NodeList of buttons
