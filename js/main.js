@@ -139,7 +139,17 @@ const addButtonListeners = () => {
 // removeEventListener)
 // e. Refer to the addButtonListeners function as this should be nearly identical
 // f. Return the button elements which were selected
-
+const removeButtonListeners = () => {
+    const buttons = document.querySelectorAll('main button');  
+    if(buttons) {
+        buttons.forEach(button => {
+        const postId = button.dataset.postId;
+        button.removeEventListener("click", (event) => {
+            toggleComments(event, postId);}, false);
+    }); 
+  }
+    return buttons;
+}
 // 8. createComments
 // a. Depends on the createElemWithText function we created
 // b. Receives JSON comments data as a parameter
