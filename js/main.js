@@ -124,10 +124,10 @@ const addButtonListeners = () => {
     const buttons = document.querySelectorAll('main button');
     if (buttons) {
         buttons.forEach(button => {
-            const postId = button.dataset.postId;
+            const postId = buttons.dataset.postId;
             buttons.addEventListener('click', (event) => {
                 toggleComments(event, postId);
-            }, false)
+            }, true)
         })
         return buttons;
     }
