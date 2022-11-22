@@ -95,7 +95,7 @@ const deleteChildElements = (parentElement) => {
     if (!(parentElement instanceof HTMLElement)) {
         return undefined;
     }
-    const child = parentElement.lastElementChild;
+    let child = parentElement.lastElementChild;
     while (child != undefined) {
         parentElement.removeChild(child);
         child = parentElement.lastElementChild;
