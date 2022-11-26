@@ -228,6 +228,9 @@ const getUsers = async () => {
 // f. Await the users data response
 // g. Return the JSON data
 const getUserPosts = async (userId) => {
+    if (!userId) {
+        return undefined;
+    }
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`);
         const jsonResponse = await response.json();
@@ -246,6 +249,9 @@ const getUserPosts = async (userId) => {
 // f. Await the user data response
 // g. Return the JSON data
 const getUser = async (userId) => {
+    if (!userId) {
+        return undefined;
+    }
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
         const jsonResponse = await response.json();
@@ -267,6 +273,9 @@ const getUser = async (userId) => {
 // Therefore, these functions will also need to be async. When they call the API functions, they will
 // need to await data from those functions.
 const getPostComments = async (postId) => {
+    if (!postId) {
+        return undefined;
+    }
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
         const jsonResponse = await response.json();
@@ -288,6 +297,9 @@ const getPostComments = async (postId) => {
 // i. Append the fragment to the section
 // j. Return the section element
 const displayComments = async (postId) => {
+    if (!postId) {
+        return undefined;
+    }
     const section = document.createElement('section');
     section.dataset.postId = postId;
     section.classList.add('comments'); section.classList.add('hide');
@@ -322,7 +334,10 @@ const displayComments = async (postId) => {
 // s. After the loop completes, append the article element to the fragment
 // t. Return the fragment element
 const createPosts = async (jPosts) => {
-    const fragElement = document.createElement();
+    if (!jPosts) {
+        return undefined;
+    }
+    const fragElement = document.createDocumentFragment();
     
     for ( let i = 0; i < jPosts.length; i++) {
         
@@ -334,7 +349,7 @@ const createPosts = async (jPosts) => {
         const p3 = createElemWithText("p", `Author: ${author.name} with ${author.company.name}`);
         const p4 = createElemWithText("p", `${author.company.catchPhrase}`);
         const button = createElemWithText("button", "Show Comments");
-        button.dataset.postId = jsonPosts[i].id;
+        button.dataset.postId = jPosts[i].id;
         const section = await displayComments(jPosts[i].id);
     
         article.append(h2); article.append(p1);
