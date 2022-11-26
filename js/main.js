@@ -164,7 +164,20 @@ const removeButtonListeners = () => {
 // j. Append the h3 and paragraphs to the article element (see cheatsheet)
 // k. Append the article element to the fragment
 // l. Return the fragment element
-
+const createComments = (jData) => {
+    if (!jData) {
+        return undefined;
+    }
+    const fragElement = document.createDocumentFragment();
+    jData.forEach(comment => {
+        const article = document.createElement('article');
+        const h3 = createElemWithText('h3', comment.name);
+        const p1 = createElemWithText('p', comment.body);
+        const p2 = createElemWithText('p', `From: ${comment.email}`);
+        article.append(h3,p1,p2); fragElement.append(article);
+    });
+    return fragElement;
+};
 // 9. populateSelectMenu
 // a. Depends on the createSelectOptions function we created
 // b. Receives the users JSON data as a parameter
@@ -177,7 +190,17 @@ const removeButtonListeners = () => {
 // NOTE: The next functions use Async / Await to request data from an API. We cover this in
 // Week 13. I do not recommend proceeding beyond this point until you have completed the
 // learning module for Week 13.
-
+const populateSelectMenu = (jData) => {
+    if (!jData) {
+        return undefined;
+    }
+    const selectMenu = document.getElementById('selectMenu');
+    const options = createSelectOptions(jData);
+    options.forEach(element => {
+        selectMenu.append(element);
+    });
+    return selectMenu;
+}
 // 10. getUsers
 // a. Fetches users data from: https://jsonplaceholder.typicode.com/ (look at
 // Resources section)
@@ -186,7 +209,15 @@ const removeButtonListeners = () => {
 // d. Uses the fetch API to request all users
 // e. Await the users data response
 // f. Return the JSON data
-
+const getUsers = async () => {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch (err) {
+        console.error(err.stack)
+    }
+}
 // 11. getUserPosts
 // a. Receives a user id as a parameter
 // b. Fetches post data for a specific user id from:
@@ -196,7 +227,15 @@ const removeButtonListeners = () => {
 // e. Uses the fetch API to request all posts for a specific user id
 // f. Await the users data response
 // g. Return the JSON data
-
+const getUserPosts = async (userId) => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch (err) {
+        console.error(err.stack)
+    }
+}
 // 12. getUser
 // a. Receives a user id as a parameter
 // b. Fetches data for a specific user id from: https://jsonplaceholder.typicode.com/
@@ -206,7 +245,15 @@ const removeButtonListeners = () => {
 // e. Uses the fetch API to request a specific user id
 // f. Await the user data response
 // g. Return the JSON data
-
+const getUser = async (userId) => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch (err) {
+        console.error(err.stack);
+    }
+}
 // 13. getPostComments
 // a. Receives a post id as a parameter
 // b. Fetches comments for a specific post id from:
@@ -219,7 +266,15 @@ const removeButtonListeners = () => {
 // NOTE: The next functions will depend on the async API data functions we just created.
 // Therefore, these functions will also need to be async. When they call the API functions, they will
 // need to await data from those functions.
-
+const getPostComments = async (postId) => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    } catch (err) {
+        console.error(err.stack);
+    }
+}
 // 14. displayComments
 // a. Dependencies: getPostComments, createComments
 // b. Is an async function
@@ -232,7 +287,16 @@ const removeButtonListeners = () => {
 // h. Creates a variable named fragment equal to createComments(comments)
 // i. Append the fragment to the section
 // j. Return the section element
-
+const displayComments = async (postId) => {
+    const section = document.createElement('section');
+    section.dataset.postId = postId;
+    section.classList.add('comments'); section.classList.add('hide');
+    const comments = await getPostComments(postId);
+    const fragment = createComments(comments);
+    
+    section.append(fragment);
+    return section;
+}
 // 15. createPosts
 // a. Dependencies: createElemWithText, getUser, displayComments
 // b. Is an async function
@@ -257,6 +321,29 @@ const removeButtonListeners = () => {
 // r. Append the section element to the article element
 // s. After the loop completes, append the article element to the fragment
 // t. Return the fragment element
+const createPosts = async (jPosts) => {
+    const fragElement = document.createElement();
+    
+    for ( let i = 0; i < jPosts.length; i++) {
+        
+        const article = document.createElement("article");
+        const h2 = createElemWithText("h2", jPosts[i].title);
+        const p1 = createElemWithText("p", jPosts[i].body);
+        const p2 = createElemWithText("p", `Post ID: ${jPosts[i].id}`);
+        const author = await getUser(jPosts[i].userId);
+        const p3 = createElemWithText("p", `Author: ${author.name} with ${author.company.name}`);
+        const p4 = createElemWithText("p", `${author.company.catchPhrase}`);
+        const button = createElemWithText("button", "Show Comments");
+        button.dataset.postId = jsonPosts[i].id;
+        const section = await displayComments(jPosts[i].id);
+    
+        article.append(h2); article.append(p1);
+        article.append(p2); article.append(p3);
+        article.append(p4); article.append(button);
+        article.append(section); fragElement.append(article);
+    }
+    return fragElement;
+}
 
 // 16. displayPosts
 // a. Dependencies: createPosts, createElemWithText
