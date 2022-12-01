@@ -375,7 +375,13 @@ const createPosts = async (jPosts) => {
 // NOTE: This is the last group of functions. I call them “procedural functions” because they exist
 // to pull the other functions together in an order that allows the web app to function as it should.
 // This means their sole purpose is to call dependencies with the correct data in the proper order.
-
+const displayPosts = async (jPosts) => {
+    const main = document.querySelector('main');
+    const element = jPosts ? await createPosts(jPosts)
+                           : main.querySelector('p');
+    main.append(element);
+    return element;
+}
 // 17. toggleComments
 // a. Dependencies: toggleCommentSection, toggleCommentButton
 // b. Receives 2 parameters: (see addButtonListeners function description)
@@ -389,7 +395,16 @@ const createPosts = async (jPosts) => {
 // h. Return an array containing the section element returned from
 // toggleCommentSection and the button element returned from
 // toggleCommentButton: [section, button]
-
+const toggleComments = (event, postId) => {
+    if(!event && !postId) {
+        return undefined;
+    }
+    event.target.listener = true;
+    const section = toggleCommentSection(postId);
+    const button = toggleCommentButton(postId);
+    const arr = [section, button];
+    return arr;
+}
 // 18. refreshPosts
 // a. Dependencies: removeButtonListeners, deleteChildElements, displayPosts,
 // addButtonListeners
@@ -405,7 +420,17 @@ const createPosts = async (jPosts) => {
 // k. Result of addButtonListeners is the buttons returned from this function
 // l. Return an array of the results from the functions called: [removeButtons, main,
 // fragment, addButtons]
-
+const refreshPosts = async (jPosts) => {
+    if (!jPosts) {
+        return undefined;
+    }
+    const removeButtons = removeButtonListeners();
+    const main = deleteChildElements(document.querySelector('main'));
+    const fragment = await displayPosts(jPosts);
+    const addButtons = addButtonListeners();
+    const arr = [removeButtons, main, fragment, addButtons];
+    return arr;
+}
 // 19. selectMenuChangeEventHandler
 // a. Dependencies: getUserPosts, refreshPosts
 // b. Should be an async function
@@ -419,7 +444,19 @@ const createPosts = async (jPosts) => {
 // j. Enables the select menu after results are received (disabled property)
 // k. Return an array with the userId, posts and the array returned from refreshPosts:
 // [userId, posts, refreshPostsArray]
-
+const selectMenuChangeEventHandler = async (event) => {
+     if (!event) {
+        return undefined;
+     }
+     const selectMenu = document.getElementById('selectMenu');
+     selectMenu.disabled = true;
+     const userId = event.target.value || 1;
+     const jPosts = await getUserPosts(userId);
+     const rPosts = await refreshPosts(jPosts);
+     selectMenu.disabled = false;
+     const arr = [userId, jPosts, rPosts];
+     return arr;
+}
 // 20. initPage
 // a. Dependencies: getUsers, populateSelectMenu
 // b. Should be an async function
@@ -430,7 +467,12 @@ const createPosts = async (jPosts) => {
 // g. Result is the select element returned from populateSelectMenu
 // h. Return an array with users JSON data from getUsers and the select element
 // result from populateSelectMenu: [users, select]
-
+const initPage = async () => {
+    const jUsers = await getUsers();
+    const selectMenu = populateSelectMenu(jUsers);
+    const arr = [jUsers, selectMenu];
+    return arr;
+    }
 // 21. initApp
 // a. Dependencies: initPage, selectMenuChangeEventHandler
 // b. Call the initPage() function.
@@ -438,7 +480,11 @@ const createPosts = async (jPosts) => {
 // d. Add an event listener to the #selectMenu for the “change” event
 // e. The event listener should call selectMenuChangeEventHandler when the change
 // event fires for the #selectMenu
-
+const initApp = () => {
+    initPage();
+    const selectMenu = document.getElementById('selectMenu');
+    selectMenu.addEventListener('change', selectMenuChangeEventHandler, false);
+}
 // f. NOTE: All of the above needs to be correct for you app to function correctly.
 // However, I can only test if the initApp function exists. It does not return anything.
 
@@ -449,3 +495,4 @@ const createPosts = async (jPosts) => {
 // 2. Listen for the “DOMContentLoaded” event.
 // 3. Put initApp in the listener as the event handler function.
 // 4. This will call initApp after the DOM content has loaded and your app will be started.
+document.addEventListener('DOMContentLoaded', initApp, false);
