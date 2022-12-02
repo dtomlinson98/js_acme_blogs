@@ -10,8 +10,8 @@
 // // g. Use document.createElement() to create the requested HTML element
 // // h. Set the other desired element attributes.
 // // i. Return the created element.
-const createElemWithText = (elementName = 'p', textContent = '', className = '') => {
-    const newElement = document.createElement(elementName);
+const createElemWithText = (element = 'p', textContent = '', className = '') => {
+    const newElement = document.createElement(element);
     newElement.textContent = textContent;
     if (className) newElement.classList.add(className);
     return newElement;
